@@ -1,12 +1,12 @@
- /*Author: justsurfing
-Go hard or go home   
+/*Author: justsurfing
+Go hard or go home
 */
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
 #define endl "\n"
 #define pb push_back
-#define mod 1000000007 
+#define mod 1000000007
 #define inf 100000000000000000
 #define CHAR 256
 #define all(x) x.begin(), x.end()
@@ -44,34 +44,34 @@ ll ncr(ll n, ll k) {
     }
     return -1;
 }
-ll power( int x,int y)
+ll power( int x, int y)
 {
-    ll temp=x;
+    ll temp = x;
     ll result = 1;
     while (y > 0) {
-      if((y&1)==1) // y is odd
-      {
-        result=(result*temp)%mod;
-      }
-      temp=(temp*temp)%mod;
-      y=y>>1; // y=y/2;
+        if ((y & 1) == 1) // y is odd
+        {
+            result = (result * temp) % mod;
+        }
+        temp = (temp * temp) % mod;
+        y = y >> 1; // y=y/2;
     }
-    return result%mod;
+    return result % mod;
 }
-void SieveOfEratosthenes(int n,vector<int>&get)
+void SieveOfEratosthenes(int n, vector<int>&get)
 {
     bool prime[n + 1];
     memset(prime, true, sizeof(prime));
- 
+
     for (int p = 2; p * p <= n; p++) {
-       
+
         if (prime[p] == true) {
-         
+
             for (int i = p * p; i <= n; i += p)
                 prime[i] = false;
         }
     }
- 
+
     // Print all prime numbers
     for (int p = 2; p <= n; p++)
         if (prime[p])
@@ -79,7 +79,7 @@ void SieveOfEratosthenes(int n,vector<int>&get)
             get.pb(p);
 }
 int main() {
-   /*Uncommment for the sieve */
+    /*Uncommment for the sieve */
     //  vector<int>get;
     //     SieveOfEratosthenes(1000005,get);
     // compute();
@@ -87,36 +87,25 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     cout.tie(0);
-    int t,n;
- 
-    // 1. brute force | 2. two pointers | 3. Prefix sum | 4. Binary search 
-    // 5. DSA | 6. Graphs | 7. DP
-    // constructive fucks //string
-    
-        // int mod=1e9+7;
-        cin>>n;
-        vector<pair<int,int>>arr(n);
-        for(auto &i:arr)cin>>i.first>>i.second;
-        sort(all(arr));
-        //for very ending time we can bs on the arriving time that is less than that ending time
-        //left side overlapping can also be there so it won't work 
-        //use map and prefix sum instead
-        map<ll,ll>mp;
-        ll ans=1;
-        for(int i=0;i<n;i++)
+    int t, n;
+    cin >> n;
+    vector<ll>arr(n);
+    for (auto &i : arr)cin >> i;
+    //we can just simulate the process using a set and then size of set will be the answer
+    multiset<int>ans;
+    for (auto i : arr)
+    {
+        auto it = ans.upper_bound(i);
+        if (it == ans.end())
         {
-           mp[arr[i].first]++;
-           mp[arr[i].second+1]--;
+            ans.insert(i);
         }
-        ll sum=0;
-        for(auto i:mp)
-        {
-            sum+=i.second;
-            ans=max(ans,sum);
+        else {
+            // *it = i;
+            ans.erase(it);
+            ans.insert(i);
         }
-        cout<<ans<<endl;
-       
-       
-
-     return 0;
+    }
+    cout << ans.size() << endl;
+    return 0;
 }
